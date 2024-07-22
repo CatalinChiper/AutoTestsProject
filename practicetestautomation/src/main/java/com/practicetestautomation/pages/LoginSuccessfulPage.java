@@ -39,5 +39,4 @@ public class LoginSuccessfulPage {
         PageFactory.initElements(webDriver, this);
     }
 
-
 }
