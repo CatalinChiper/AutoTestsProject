@@ -13,23 +13,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LoginPage {
 
-    private final WebDriver webDriver;
     private final WebDriverWait webDriverWait;
 
     @FindBy(xpath = "//input[@id='username']")
-    private WebElement userNameInput;
+    public WebElement userNameInput;
 
     @FindBy(xpath = "//input[@id='password']")
-    private WebElement passwordInput;
+    public WebElement passwordInput;
 
     @FindBy(xpath = "//button[@id='submit']")
-    private WebElement submitButton;
+    public WebElement submitButton;
 
     @FindBy(xpath = "//*[@id='error']")
-    private WebElement validationMessage;
+    public WebElement validationMessage;
 
     public LoginPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
         this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         PageFactory.initElements(webDriver, this);
     }
@@ -52,15 +50,21 @@ public class LoginPage {
         return this;
     }
 
-    public LoginPage clickSubmitButton() {
+    public void clickSubmitButton() {
         webDriverWait.until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
-        return this;
     }
 
     public void checkValidationMessageHasText(String errorMessage) {
         webDriverWait.until(ExpectedConditions.visibilityOf(validationMessage));
         assertThat(validationMessage.getText(),
                 is(errorMessage));
+    }
+
+    public static void openPageAndLoginWithCredentials(WebDriver driver, String user, String pwd) {
+        LoginPage.using(driver)
+                .setUserName(user)
+                .setPassword(pwd)
+                .clickSubmitButton();
     }
 }

@@ -20,6 +20,9 @@ public class LoginSuccessfulPage {
     @FindBy(xpath = "//*[contains(@class,'post-title')]")
     private WebElement pageTitle;
 
+    @FindBy(xpath = "//*[contains(@class,'post-content')]//*[contains(@class,'has-text-align-center')]")
+    private WebElement pageContent;
+
     @FindBy(xpath = "//*[contains(@class,'wp-block-button__link') and text()='Log out']")
     private WebElement logOutButton;
 
@@ -27,6 +30,12 @@ public class LoginSuccessfulPage {
         webDriverWait.until(ExpectedConditions.visibilityOf(pageTitle));
         assertThat(pageTitle.getText(),
                 is(title));
+    }
+
+    public void checkPageContent(String contentText) {
+        webDriverWait.until(ExpectedConditions.visibilityOf(pageContent));
+        assertThat(pageContent.getText(),
+                is(contentText));
     }
 
     public void clickLogoutButton() {
@@ -39,4 +48,7 @@ public class LoginSuccessfulPage {
         PageFactory.initElements(webDriver, this);
     }
 
+    public static LoginSuccessfulPage using(WebDriver webDriver) {
+        return new LoginSuccessfulPage(webDriver);
+    }
 }
